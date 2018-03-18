@@ -1,22 +1,22 @@
 <job id="ZTIWindowsUpdate">
-	<script language="VBScript" src="ZTIUtility.vbs"/>
+	<script language="VBScript" src=".\ZTIUtility.vbs"/>
 	<script language="VBScript">
 ' // ***************************************************************************
-' // 
+' //
 ' // Copyright (c) Microsoft Corporation.  All rights reserved.
-' // 
+' //
 ' // Microsoft Deployment Toolkit Solution Accelerator
 ' //
 ' // File:      ZTIWindowsUpdate.wsf
-' // 
+' //
 ' // Version:   6.3.8443.1000
-' // 
-' // Purpose:   Installs all needed updates (drivers, patches, service packs, 
-' //            etc.) from the Windows Update/Microsoft Update site or WSUS 
+' //
+' // Purpose:   Installs all needed updates (drivers, patches, service packs,
+' //            etc.) from the Windows Update/Microsoft Update site or WSUS
 ' //            server, rebooting as required until no more updates are needed.
-' // 
+' //
 ' // Usage:     cscript.exe [//nologo] ZTIWindowsUpdate.wsf [/debug:true]
-' // 
+' //
 ' // ***************************************************************************
 
 Option Explicit
@@ -43,7 +43,7 @@ Class ZTIWindowsUpdate
 
 	Public globalVariable
 	Private privateVariable
-	
+
 
 	'//----------------------------------------------------------------------------
 	'//  Constructor to initialize needed global objects
@@ -54,14 +54,14 @@ Class ZTIWindowsUpdate
 		' No initialization is required
 
 	End Sub
-	
-	
+
+
 	'//----------------------------------------------------------------------------
 	'//  Main routine
 	'//----------------------------------------------------------------------------
 
 	Function Main
-	
+
 		Dim iRetVal
 		Dim Item
 		Dim MSIT_WU_Count
@@ -171,7 +171,7 @@ Class ZTIWindowsUpdate
 					If Err.Number <> 0 then
 						oLogging.CreateEntry "There was an error getting Windows Update to opt into Microsoft Update. Please verify you are running the latest version of Windows Update Agent." , LogTypeWarning
 					End if
-					
+
 					If oEnvironment.Item("WsusServer") = "" then
 
 						'//----------------------------------------------------------------------------
@@ -184,12 +184,12 @@ Class ZTIWindowsUpdate
 						iResult = oUtility.FindFile("muauth.cab", strCabPath)
 
 						If iResult <> Success then
-							'// "" will force a internet search for cab file 
+							'// "" will force a internet search for cab file
 							strCabPath = ""
 						End if
 
 						oLogging.CreateEntry " about to begin add service ["+ strCabPath +"]", LogTypeInfo
-					
+
 						Set NewUpdateService = ServiceManager.AddService2("7971f918-a847-4430-9279-4a52d1efe18d",6,strCabPath)
 						oLogging.CreateEntry " Status: " & NewUpdateService.RegistrationState, LogTypeInfo
 					End if
@@ -334,7 +334,7 @@ Class ZTIWindowsUpdate
 				End if
 			next
 			iSize = item.MinDownloadSize
-			If item.MaxDownloadSize > 0 then 
+			If item.MaxDownloadSize > 0 then
 				iSize = Item.MaxDownloadSize
 			End if
 			If kb <> "" then
@@ -343,7 +343,7 @@ Class ZTIWindowsUpdate
 			If iSize > 0 then
 				kb = kb & " - " & FormatLargeSize(iSize)
 			End if
-			
+
 			If bInstall = TRUE and updatesToDownload.count < MAX_UPDATES then
 				oLogging.CreateEntry "INSTALL - " & item.Identity.UpdateID & " - " & Item.Title & kb, LogTypeInfo
 				updatesToDownload.Add(Item)
@@ -364,7 +364,7 @@ Class ZTIWindowsUpdate
 			CleanupWhenDone
 			Main = Success
 			Exit Function
-			
+
 		End if
 
 
@@ -475,7 +475,7 @@ Class ZTIWindowsUpdate
 			oEnvironment.Item("SMSTSRebootRequested") = "true"
 
 		Else
-		
+
 			' A recently installed MicrosoftUpdate/WindowsUpdate component *may* require more/new updates.
 			' Rerun Main() to ensure that all updates are installed. Exit above when MU/WU returns NO updates.
 
@@ -513,8 +513,8 @@ Class ZTIWindowsUpdate
 		Else
 			oLogging.CreateEntry "Unknown previous NoAutoUpdateKey State, Do Nothing [" & NoAutoUpdateState & "].", LogTypeInfo
 		End if
-			
-	End Function 
+
+	End Function
 
 	Function VerifyWUA
 
@@ -530,9 +530,9 @@ Class ZTIWindowsUpdate
 		'//----------------------------------------------------------------------------
 
 		On error resume next
-		
+
 		If UCase(oEnvironment.Item("Debug")) = "TRUE" then
-		
+
 			oShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Trace\Level", 3, "REG_DWORD"
 
 			oShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Trace\Handler\Flags", &h000000ff, "REG_DWORD"
