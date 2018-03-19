@@ -5,13 +5,13 @@ Write-Host "When disk clean up is complete. Press any key to continue ..."
 $host.UI.RawUI.ReadKey()
 Write-Host "Running SFC scan"
 sfc /scannow
-Write-Host "Performing GPO Update"
-gpupdate /force
 Write-Host "Updating Windows"
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 robocopy $ScriptDir C:\WINDOWS\system32\
 Write-Host "Updating Windows"
-cscript.exe .\ZTIWindowsUpdate.wsf 
+cscript.exe .\ZTIWindowsUpdate.wsf
+Write-Host "Performing GPO Update"
+gpupdate /force /boot
 Write-Host "Restarting computer in 5s"
 Start-Sleep -s 5
 shutdown /r /f
