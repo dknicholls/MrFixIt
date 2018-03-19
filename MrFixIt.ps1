@@ -12,6 +12,6 @@ Write-Host "Updating Windows"
 cscript.exe .\ZTIWindowsUpdate.wsf
 Write-Host "Performing GPO Update"
 gpupdate /force /boot
-Write-Host "Restarting computer in 5s"
-Start-Sleep -s 5
+Write-Host "Restarting computer in 10s"
+Start-Sleep -s 10
 shutdown /r /f
